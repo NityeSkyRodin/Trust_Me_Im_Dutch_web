@@ -1,96 +1,13 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <!-- CRUCIAAL VOOR MOBIEL: Zorgt dat het niet uitzoomt -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nederland: Verdeeld - Controller</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<!-- SCHERM 1: LOBBY / INLOGGEN -->
-<div id="lobby-screen" class="screen active">
-    <h1>🇳🇱 VERDEELD</h1>
-    <p>Voer de kamercode in om te verbinden met het hoofdscherm.</p>
-
-    <input type="text" id="room-code" placeholder="KAMERCODE (bijv. ABCD)" maxlength="4">
-
-    <select id="province-select">
-        <option value="Gelderland">Gelderland</option>
-        <option value="Brabant">Brabant</option>
-        <option value="Zuid-Holland">Zuid-Holland</option>
-        <option value="Overijssel">Overijssel</option>
-    </select>
-
-    <button onclick="joinGame()">Verbinden</button>
-</div>
-
-<!-- SCHERM 2: HET SPEL (Geheime Stuurhut) -->
-<div id="game-screen" class="screen">
-
-    <!-- Header -->
-    <header>
-        <h2 id="player-province">Provincie</h2>
-        <div id="connection-status">🟢 Verbonden</div>
-    </header>
-
-    <!-- Tab 1: STATUS (Jouw resources) -->
-    <main id="tab-status" class="tab-content active">
-        <h3>Jouw Voorraden</h3>
-        <div class="resource-grid">
-            <div class="resource-card">💰 Geld: <span id="res-geld">450</span></div>
-            <div class="resource-card">🌾 Voedsel: <span id="res-voedsel">72</span></div>
-            <div class="resource-card">🏭 Industrie: <span id="res-industrie">61</span></div>
-            <div class="resource-card">🪖 Militair: <span id="res-militair">48</span></div>
-        </div>
-        <p class="hint">Let op: Alleen jij ziet deze exacte cijfers.</p>
-    </main>
-
-    <!-- Tab 2: ACTIES / BOUWEN -->
-    <main id="tab-acties" class="tab-content">
-        <h3>Ontwikkeling</h3>
-        <button class="action-btn" onclick="sendAction('bouwen', 'fabriek')">🏭 Bouw Fabriek (Kost 100 💰)</button>
-        <button class="action-btn" onclick="sendAction('bouwen', 'kazerne')">🪖 Train Troepen (Kost 50 🌾)</button>
-        <button class="action-btn secret" onclick="sendAction('spionage', 'brabant')">🕵️ Bespioneer Brabant (Kost 200 💰)</button>
-    </main>
-
-    <!-- Tab 3: DIPLOMATIE (Chat / Deals) -->
-    <main id="tab-chat" class="tab-content">
-        <h3>Geheime Communicatie</h3>
-        <div class="chat-box" id="chat-box">
-            <p><strong>Brabant:</strong> Stem jij straks mee voor die tankfabriek?</p>
-        </div>
-        <div class="chat-input-area">
-            <select id="chat-target">
-                <option value="Brabant">Aan: Brabant</option>
-                <option value="Iedereen">Aan: Iedereen</option>
-            </select>
-            <input type="text" id="chat-msg" placeholder="Typ een bericht...">
-            <button onclick="sendMessage()">Stuur</button>
-        </div>
-    </main>
-
-    <!-- Tab 4: STEMMEN (Nationale Events) -->
-    <main id="tab-stemmen" class="tab-content">
-        <div class="alert-box">
-            <h3>⚠️ NATIONAAL EVENT: Voedseltekort</h3>
-            <p>Er moet 200 voedsel naar de steden. Stem je vóór (kost jou 40 voedsel) of tegen?</p>
-            <button class="vote-btn yes" onclick="sendAction('stem', 'voor')">✅ VÓÓR STEMMEN</button>
-            <button class="vote-btn no" onclick="sendAction('stem', 'tegen')">❌ TEGEN STEMMEN</button>
-        </div>
-    </main>
-
-    <!-- Mobiele Navigatie Balk -->
-    <nav class="bottom-nav">
-        <button onclick="switchTab('tab-status')">📊 Status</button>
-        <button onclick="switchTab('tab-acties')">🏗️ Acties</button>
-        <button onclick="switchTab('tab-chat')">💬 Chat</button>
-        <button onclick="switchTab('tab-stemmen')">🗳️ Stem</button>
-    </nav>
-
-</div>
-
-<script src="app.js"></script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trust-me-im-dutch-web</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
