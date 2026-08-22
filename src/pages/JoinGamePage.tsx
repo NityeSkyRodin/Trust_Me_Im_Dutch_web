@@ -4,17 +4,29 @@ import { DossierPanel } from '../components/DossierPanel';
 import { GameLogo } from '../components/GameLogo';
 import { StampButton } from '../components/StampButton';
 import { TextField } from '../components/TextField';
-import type {NavigationProps} from "../Types/Navigation.ts";
-import {RoomService} from "../Services/RoomService.ts";
+
+import type { NavigationProps } from '../Types/Navigation';
+import type { GameSession } from '../Types/GameState';
+
+import { RoomService } from '../Services/RoomService';
 
 const EASTER_EGG_CODE = '1945';
 
-export function JoinGamePage({ onNavigate }: NavigationProps) {
+interface JoinGamePageProps extends NavigationProps {
+    onJoin: (session: GameSession) => void;
+}
+
+export function JoinGamePage({
+                                 onNavigate,
+                                 onJoin,
+                             }: JoinGamePageProps) {
     const [playerName, setPlayerName] = useState('');
     const [roomCode, setRoomCode] = useState('');
     const [error, setError] = useState('');
 
-   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    async function handleSubmit(
+        event: React.SubmitEvent<HTMLFormElement>
+    ) {
         event.preventDefault();
 
         setError('');
@@ -32,6 +44,9 @@ export function JoinGamePage({ onNavigate }: NavigationProps) {
             return;
         }
 
+        /*
+         * Easter egg
+         */
         if (code === EASTER_EGG_CODE) {
             console.log('EASTER EGG ACTIVATED');
 
@@ -40,15 +55,27 @@ export function JoinGamePage({ onNavigate }: NavigationProps) {
             return;
         }
 
-        const roomService = new RoomService();
+        try {
+            const roomService = new RoomService();
 
-        const response = await roomService.joinRoom(
-            playerName,
-            roomCode
-        );
+            const response = await roomService.joinRoom(
+                name,
+                code
+            );
 
-        if (response.success) {
-            console.log('Successfully joined room');
+            if (!response.success) {
+                setError('UNABLE TO JOIN COUNCIL.');
+                return;
+            }
+            
+            onJoin({
+                playerName: response.player_name,
+                roomCode: response.room_code,
+            });
+        } catch (error) {
+            console.error(error);
+
+            setError('UNABLE TO CONTACT COUNCIL SERVER.');
         }
     }
 
@@ -78,7 +105,10 @@ export function JoinGamePage({ onNavigate }: NavigationProps) {
                     upon successful registration.
                 </p>
 
-                <form onSubmit={handleSubmit} style={form}>
+                <form
+                    onSubmit={handleSubmit}
+                    style={form}
+                >
                     <TextField
                         label="YOUR NAME"
                         value={playerName}
@@ -91,7 +121,9 @@ export function JoinGamePage({ onNavigate }: NavigationProps) {
                     <TextField
                         label="COUNCIL CODE"
                         value={roomCode}
-                        onChange={(value) => setRoomCode(value.toUpperCase())}
+                        onChange={(value) =>
+                            setRoomCode(value.toUpperCase())
+                        }
                         placeholder="XXXXXX"
                         maxLength={6}
                         spellCheck={false}
@@ -122,6 +154,7 @@ export function JoinGamePage({ onNavigate }: NavigationProps) {
     );
 }
 
+
 const page: React.CSSProperties = {
     width: '100%',
     minHeight: '100dvh',
@@ -141,6 +174,7 @@ const page: React.CSSProperties = {
     fontFamily: 'var(--mono)',
 };
 
+
 const classifiedStamp: React.CSSProperties = {
     display: 'inline-block',
 
@@ -158,6 +192,7 @@ const classifiedStamp: React.CSSProperties = {
     marginBottom: '16px',
 };
 
+
 const header: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
@@ -168,11 +203,13 @@ const header: React.CSSProperties = {
     letterSpacing: '0.5px',
 };
 
+
 const divider: React.CSSProperties = {
     borderTop: '1px dashed var(--red)',
 
     margin: '10px 0 18px',
 };
+
 
 const title: React.CSSProperties = {
     margin: 0,
@@ -186,6 +223,7 @@ const title: React.CSSProperties = {
     color: 'var(--ink)',
 };
 
+
 const description: React.CSSProperties = {
     fontSize: '14px',
     lineHeight: '1.6',
@@ -195,12 +233,14 @@ const description: React.CSSProperties = {
     margin: '12px 0 24px',
 };
 
+
 const form: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
 
     gap: '18px',
 };
+
 
 const errorMessage: React.CSSProperties = {
     padding: '11px 12px',
@@ -217,6 +257,7 @@ const errorMessage: React.CSSProperties = {
     fontWeight: 'bold',
 };
 
+
 const footerNote: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'space-between',
@@ -230,6 +271,7 @@ const footerNote: React.CSSProperties = {
 
     color: 'var(--ink-muted)',
 };
+
 
 const bottomText: React.CSSProperties = {
     marginTop: '20px',

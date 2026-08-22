@@ -2,7 +2,8 @@ import { BaseHttp } from './BaseHttp.ts';
 
 export interface JoinRoomResponse {
     success: boolean;
-    message: string;
+    player_name: string;
+    room_code: string;
 }
 
 export class RoomService extends BaseHttp {
